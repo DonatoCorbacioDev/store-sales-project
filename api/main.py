@@ -1,0 +1,76 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import joblib
+import pandas as pd
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+MODEL_DIR = Path("models")
+
+app = FastAPI(
+    title="Store Sales Forecasting API",
+    version="1.0.0",
+)
+
+
+# Load model at startup
+model = joblib.load(MODEL_DIR / "store_sales_lgbm.joblib")
+
+with open(MODEL_DIR / "feature_list.json", "r", encoding="utf-8") as f:
+    FEATURES = json.load(f)
+
+
+class ForecastRequest(BaseModel):
+    store_nbr: int
+    family: int
+    onpromotion: int
+
+    year: int
+    month: int
+    day: int
+    dayofweek: int
+    weekofyear: int
+    is_weekend: int
+
+    lag_1: float
+    lag_7: float
+
+    rolling_mean_7: float
+    rolling_std_7: float
+    rolling_mean_14: float
+
+    trend_1_7: float
+    promo_last_7: float
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "model_loaded": model is not None,
+    }
+
+
+@app.get("/")
+def root():
+    return {
+        "message": "Store Sales Forecasting API"
+    }
+
+
+@app.post("/predict")
+def predict(request: ForecastRequest):
+    data = request.model_dump()
+
+    X = pd.DataFrame([data])[FEATURES]
+
+    prediction = model.predict(X)[0]
+    prediction = max(float(prediction), 0.0)
+
+    return {
+        "prediction": prediction
+    }

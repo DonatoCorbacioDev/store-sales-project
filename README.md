@@ -4,7 +4,7 @@ Production-oriented retail forecasting project based on the Kaggle *Store Sales 
 
 The objective is not only to improve predictive accuracy, but to simulate how a forecasting system should be developed, validated, evaluated and monitored in a real-world ML environment.
 
-The project progressively evolves from baseline forecasting to business-aware evaluation, trust scoring and monitoring-oriented forecasting governance.
+The project progressively evolves from baseline forecasting to business-aware evaluation, trust scoring, monitoring-oriented forecasting governance and containerized ML serving.
 
 ---
 
@@ -20,6 +20,7 @@ The system focuses on:
 * trust-aware forecasting
 * monitoring and drift detection
 * production-oriented ML reasoning
+* containerized inference serving
 
 The final goal is not simply to predict sales.
 
@@ -51,6 +52,10 @@ Business-aware evaluation
 Forecast trust scoring
         ↓
 Monitoring & drift analysis
+        ↓
+FastAPI inference service
+        ↓
+Docker containerization
 ```
 
 ---
@@ -85,6 +90,10 @@ Additional datasets available for future improvements:
 * AutoGluon
 * Matplotlib
 * Jupyter Notebook
+* FastAPI
+* Docker
+* Docker Compose
+* GitHub Actions
 
 ---
 
@@ -173,7 +182,13 @@ This validation strategy better simulates real-world forecasting conditions comp
 ```text
 store-sales-project/
 │
+├── api/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+│
 ├── data/
+├── models/
 ├── notebooks-tabular/
 ├── notebooks-time-series/
 ├── src/
@@ -183,13 +198,70 @@ store-sales-project/
 │   ├── tracking.py
 │   ├── evaluation.py
 │   ├── automl.py
+│   ├── train.py
+│   ├── predict.py
 │   └── error_analysis.py
 │
 ├── artifacts/
 ├── notes/
+├── .github/workflows/
+├── docker-compose.yml
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
+# 🐳 Docker & FastAPI Serving
+
+The project includes a containerized FastAPI inference service.
+
+Current serving workflow:
+
+```text
+Training pipeline
+        ↓
+Saved model artifact (.joblib)
+        ↓
+FastAPI inference API
+        ↓
+Docker container
+        ↓
+Docker Compose orchestration
+```
+
+API features:
+
+* `/health` endpoint
+* `/predict` inference endpoint
+* Swagger UI documentation
+* Dockerized serving
+* mounted model artifacts
+* production-oriented API structure
+
+Run locally:
+
+```bash
+docker compose up --build
+```
+
+Open:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+# ⚙️ CI/CD
+
+The repository includes a GitHub Actions workflow for Docker build validation.
+
+Current CI pipeline:
+
+* Docker image build validation
+* API container verification
+* production-oriented repository structure validation
 
 ---
 
@@ -202,8 +274,9 @@ store-sales-project/
 ✅ Business-aware evaluation completed
 ✅ Forecast trust scoring completed
 ✅ Monitoring & drift strategy completed
+✅ Dockerized FastAPI inference service completed
+✅ GitHub Actions Docker CI completed
 🔄 Refactoring notebooks into reusable ML pipeline
-🔄 Preparing ML Engineering extensions (Docker/FastAPI serving)
 
 ---
 
@@ -215,6 +288,8 @@ store-sales-project/
 pip install -r requirements.txt
 ```
 
+---
+
 ## Run notebooks
 
 Start from:
@@ -223,7 +298,31 @@ Start from:
 notebooks-tabular/nb1_baseline_correct_pipeline.ipynb
 ```
 
-Then continue sequentially through the forecasting pipeline.
+Then continue sequentially through the forecasting workflow.
+
+---
+
+## Train the forecasting model
+
+```bash
+python3 -m src.train --data-dir data --model-dir models
+```
+
+---
+
+## Run FastAPI locally
+
+```bash
+uvicorn api.main:app --reload
+```
+
+---
+
+## Run with Docker Compose
+
+```bash
+docker compose up --build
+```
 
 ---
 
@@ -254,6 +353,8 @@ The project simulates a production-oriented ML workflow:
 * operational risk analysis
 * trust-aware forecasting
 * monitoring and drift strategy
+* containerized inference serving
+* CI-oriented repository structure
 
 The project should be considered a production-oriented forecasting prototype rather than a fully deployed production system.
 
@@ -264,12 +365,13 @@ The project should be considered a production-oriented forecasting prototype rat
 Planned next steps:
 
 * reusable CLI training pipeline
-* Dockerized training/inference
-* FastAPI forecast serving
-* CI/CD pipelines
-* model artifact persistence
-* monitoring dashboard
+* model registry integration
+* artifact versioning
 * retraining orchestration
+* monitoring dashboard
+* advanced transformer forecasting experiments
+* DST-aware energy forecasting experiments
+* Moirai / foundation-model experimentation
 
 ---
 
@@ -277,9 +379,10 @@ Planned next steps:
 
 * limited modeling of external regressors
 * no explicit hierarchical forecasting
-* no real-time inference serving yet
 * promotions remain difficult to model
 * extreme demand spikes are still challenging
+* no distributed training
+* no real cloud deployment yet
 
 ---
 
@@ -295,7 +398,7 @@ Planned next steps:
 
 # 🧾 Final Note
 
-This project demonstrates not only how forecasting models can be trained, but how forecasting systems can be structured, validated and monitored in realistic ML environments.
+This project demonstrates not only how forecasting models can be trained, but how forecasting systems can be structured, validated, deployed and monitored in realistic ML environments.
 
 The final output is not simply a sales prediction model.
 
@@ -305,3 +408,5 @@ It is a production-oriented forecasting workflow including:
 * operational risk analysis
 * trust-aware evaluation
 * monitoring and drift governance
+* containerized inference serving
+* CI-oriented deployment foundations

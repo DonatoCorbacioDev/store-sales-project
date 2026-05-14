@@ -17,11 +17,14 @@ app = FastAPI(
 )
 
 
-# Load model at startup
+# Load model artifacts at startup
 model = joblib.load(MODEL_DIR / "store_sales_lgbm.joblib")
 
 with open(MODEL_DIR / "feature_list.json", "r", encoding="utf-8") as f:
     FEATURES = json.load(f)
+
+with open(MODEL_DIR / "training_metadata.json", "r", encoding="utf-8") as f:
+    MODEL_METADATA = json.load(f)
 
 
 class ForecastRequest(BaseModel):
@@ -59,6 +62,20 @@ def health():
 def root():
     return {
         "message": "Store Sales Forecasting API"
+    }
+
+
+@app.get("/model-info")
+def model_info():
+    return {
+        "model_name": MODEL_METADATA.get("model_name"),
+        "model_type": MODEL_METADATA.get("model_type"),
+        "target": MODEL_METADATA.get("target"),
+        "n_features": MODEL_METADATA.get("n_features"),
+        "n_training_rows": MODEL_METADATA.get("n_training_rows"),
+        "train_start": MODEL_METADATA.get("train_start"),
+        "train_end": MODEL_METADATA.get("train_end"),
+        "features": FEATURES,
     }
 
 

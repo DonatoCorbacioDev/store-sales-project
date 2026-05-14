@@ -1,0 +1,18 @@
+name: Docker CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build API image
+        run: |
+          docker build -t store-sales-api -f api/Dockerfile .

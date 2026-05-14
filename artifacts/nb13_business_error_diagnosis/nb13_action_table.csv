@@ -1,0 +1,5 @@
+issue,diagnosis,recommended_action
+Promo spikes,Largest forecast errors remain concentrated in promotional periods,Add stronger promo uplift and promo-history features
+High-volume underforecast,Largest costly misses still occur in top-selling high-volume segments,Apply asymmetric underforecast penalty or bias correction
+Store-family concentration,Operational risk is concentrated in a limited set of store/family pockets,Consider segment-specific modeling or local overrides
+Residual high-risk slices,NB11 improves overall business risk but still fails on a few extreme slices,Introduce forecast confidence and alerting layer

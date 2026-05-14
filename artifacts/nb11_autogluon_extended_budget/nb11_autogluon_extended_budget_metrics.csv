@@ -1,0 +1,2 @@
+fold,train_end,val_start,val_end,n_train,n_val,train_time_sec,inference_time_sec,autogluon_time_limit,autogluon_presets,best_model,best_model_score_val,best_model_fit_time,best_model_pred_time_val,rmsle,mae,rmse,r2
+2,2017-07-18,2017-07-19,2017-08-15,2926044,49896,3605.5163905620575,20.797680139541626,3600,medium_quality,WeightedEnsemble_L2,-145.37307483521866,2986.691479206085,10.19992733001709,0.5915460272950206,55.78079848999907,191.5389162988633,0.9772732570538503

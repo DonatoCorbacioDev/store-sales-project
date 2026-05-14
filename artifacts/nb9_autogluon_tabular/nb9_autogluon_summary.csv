@@ -1,0 +1,2 @@
+model,rmsle_mean,rmsle_std,mae_mean,mae_std,rmse_mean,r2_mean,train_time_mean_sec,inference_time_mean_sec,nb5_reference_rmsle,nb5_reference_mae,nb5_reference_rmse,nb5_reference_r2
+autogluon_tabular,0.4760946100919312,0.0006081860438745052,55.54353305906163,3.4769934038041908,201.04016667643612,0.9759902922879443,602.7849861383438,14.373187065124512,0.59988,68.447697,248.706697,0.965119

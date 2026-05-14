@@ -1,0 +1,2 @@
+model,rmsle_mean,rmsle_std,mae_mean,mae_std,rmse_mean,r2_mean,train_time_mean_sec,inference_time_mean_sec,n_folds,prediction_length,time_limit_sec
+AutoGluon TimeSeries,0.44262376660981695,0.0391944494731718,61.424037205288755,7.889750281809393,226.08086714832217,0.9693330289730628,495.1932952404022,86.42591726779938,2,28,600

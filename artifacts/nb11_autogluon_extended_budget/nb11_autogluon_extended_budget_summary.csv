@@ -1,0 +1,2 @@
+model,rmsle_mean,rmsle_std,mae_mean,mae_std,rmse_mean,r2_mean,train_time_mean_sec,inference_time_mean_sec,total_runtime_sec,time_limit_sec,n_folds
+autogluon_tabular_extended_budget,0.5915460272950206,,55.78079848999907,,191.5389162988633,0.9772732570538503,3605.5163905620575,20.797680139541626,3628.2437427043915,3600,1

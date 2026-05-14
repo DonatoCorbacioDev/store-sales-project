@@ -1,0 +1,49 @@
+# Virtual environment
+
+.venv/
+
+# Python cache
+
+**pycache**/
+*.pyc
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# Environment variables
+
+.env
+
+# MLflow
+
+mlruns/
+
+# Dataset files
+
+data/*.csv
+
+# OS files
+
+.DS_Store
+
+# VS Code
+
+.vscode/
+
+# Temporary artifacts
+
+*.log
+
+# AutoGluon heavy artifacts
+
+artifacts/**/autogluon_models/
+artifacts/nb16_autogluon_timeseries/autogluon_timeseries_models/
+
+# Model artifacts
+
+models/
+
+# Notebook exports
+
+*.html

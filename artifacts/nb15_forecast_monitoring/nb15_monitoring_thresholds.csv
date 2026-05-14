@@ -1,0 +1,6 @@
+metric,threshold
+mean_trust_min,0.6212281855227773
+risky_share_max,0.19012345679012346
+mean_abs_error_max,72.58599177140846
+underforecast_rate_max,0.5315937149270482
+promo_risky_share_max,0.18916947250280583

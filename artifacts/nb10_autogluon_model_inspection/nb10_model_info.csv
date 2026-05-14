@@ -1,0 +1,4 @@
+fold,model,is_best_model,model_type,problem_type,eval_metric,val_score,fit_time,predict_time,stack_level,can_infer,num_features
+2,LightGBMXT,False,LGBModel,regression,root_mean_squared_error,-157.04681859301277,566.3183369636536,7.434825420379639,,True,16
+2,LightGBM,False,LGBModel,regression,root_mean_squared_error,-181.27765170391152,21.192310571670532,0.05817246437072754,,True,16
+2,WeightedEnsemble_L2,True,WeightedEnsembleModel,regression,root_mean_squared_error,-156.87704051921412,0.014050006866455078,0.000560760498046875,,True,2

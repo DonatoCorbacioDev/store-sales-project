@@ -1,0 +1,3 @@
+model,paradigm,rmsle,mae,rmse,r2,notes
+NB9_AutoGluon_Tabular,tabular_feature_driven,0.4761,55.5435,201.0401,0.976,Validated tabular AutoML benchmark with engineered features
+NB16_AutoGluon_TimeSeries,native_time_series,0.44262376660981695,61.424037205288755,226.08086714832217,0.9693330289730628,Native multi-series forecasting approach

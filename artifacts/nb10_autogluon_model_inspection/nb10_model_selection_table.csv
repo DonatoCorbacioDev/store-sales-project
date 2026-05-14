@@ -1,0 +1,4 @@
+candidate,val_score_rmse,fit_time_sec,predict_time_sec,complexity,interpretability,deployment_risk,recommended_for,recommended
+WeightedEnsemble_L2,-156.877041,587.524698,7.493559,High,Medium,Medium-High,Maximum predictive performance,Yes (benchmark winner)
+LightGBMXT,-157.046819,566.318337,7.434825,Medium,Medium,Medium,Best single-model production candidate,Yes (production candidate)
+LightGBM,-181.277652,21.192311,0.058172,Low,High,Low,Fastest baseline / low-cost deployment,Fallback only

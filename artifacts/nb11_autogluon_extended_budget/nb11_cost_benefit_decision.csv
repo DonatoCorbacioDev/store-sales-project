@@ -1,0 +1,2 @@
+experiment,reference,fold,rmsle_improvement_pct,mae_improvement_pct,train_time_ratio,engineering_decision
+NB11_AutoGluon_3600s,NB9_AutoGluon_600s,2,-24.36201474831464,3.8297556501415495,5.993481041920126,Not justified

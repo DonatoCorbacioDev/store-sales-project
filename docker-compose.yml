@@ -1,0 +1,12 @@
+services:
+  forecasting-api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+
+    container_name: forecasting-api
+
+    ports:
+      - "8000:8000"
+
+    restart: unless-stopped

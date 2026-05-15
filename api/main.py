@@ -50,7 +50,16 @@ class ForecastRequest(BaseModel):
     promo_last_7: float
 
 
-@app.get("/health")
+class ForecastResponse(BaseModel):
+    prediction: float
+
+
+class HealthResponse(BaseModel):
+    status: str
+    model_loaded: bool
+
+
+@app.get("/health", response_model=HealthResponse)
 def health():
     return {
         "status": "ok",
@@ -79,7 +88,7 @@ def model_info():
     }
 
 
-@app.post("/predict")
+@app.post("/predict", response_model=ForecastResponse)
 def predict(request: ForecastRequest):
     data = request.model_dump()
 

@@ -2,7 +2,7 @@
 
 Production-oriented retail forecasting project based on the Kaggle *Store Sales Time Series Forecasting* dataset.
 
-The objective is not only to improve predictive accuracy, but to simulate how a forecasting system should be developed, validated, evaluated and monitored in a real-world ML environment.
+The objective is not only to improve predictive accuracy, but to simulate how a forecasting system should be developed, validated, evaluated, served and monitored in a real-world ML environment.
 
 The project progressively evolves from baseline forecasting to business-aware evaluation, trust scoring, monitoring-oriented forecasting governance and containerized ML serving.
 
@@ -21,6 +21,7 @@ The system focuses on:
 * monitoring and drift detection
 * production-oriented ML reasoning
 * containerized inference serving
+* CI-based Docker validation
 
 The final goal is not simply to predict sales.
 
@@ -28,6 +29,7 @@ The goal is to build a forecasting system that can be:
 
 * validated correctly
 * interpreted operationally
+* served through an API
 * monitored over time
 * trusted conditionally
 * improved where business risk is highest
@@ -53,9 +55,13 @@ Forecast trust scoring
         ↓
 Monitoring & drift analysis
         ↓
+Saved model artifact
+        ↓
 FastAPI inference service
         ↓
 Docker containerization
+        ↓
+GitHub Actions CI
 ```
 
 ---
@@ -77,6 +83,9 @@ Additional datasets available for future improvements:
 * `oil.csv`
 * `transactions.csv`
 * `holidays_events.csv`
+* `stores.csv`
+
+Raw dataset files are not committed to the repository. They should be downloaded from Kaggle and placed inside the `data/` directory.
 
 ---
 
@@ -91,6 +100,7 @@ Additional datasets available for future improvements:
 * Matplotlib
 * Jupyter Notebook
 * FastAPI
+* Pydantic
 * Docker
 * Docker Compose
 * GitHub Actions
@@ -184,6 +194,7 @@ store-sales-project/
 │
 ├── api/
 │   ├── main.py
+│   ├── config.py
 │   ├── requirements.txt
 │   └── Dockerfile
 │
@@ -233,8 +244,11 @@ Docker Compose orchestration
 API features:
 
 * `/health` endpoint
+* `/model-info` metadata endpoint
 * `/predict` inference endpoint
 * Swagger UI documentation
+* typed Pydantic request/response schemas
+* basic API logging
 * Dockerized serving
 * mounted model artifacts
 * production-oriented API structure
@@ -253,6 +267,77 @@ http://localhost:8000/docs
 
 ---
 
+# 🔌 API Usage
+
+## Health Check
+
+```bash
+curl http://localhost:8000/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "ok",
+  "model_loaded": true
+}
+```
+
+---
+
+## Model Metadata
+
+```bash
+curl http://localhost:8000/model-info
+```
+
+This endpoint returns metadata about the loaded model artifact, including:
+
+* model name
+* model type
+* target variable
+* number of features
+* training date range
+* feature list
+
+---
+
+## Forecast Prediction
+
+```bash
+curl -X POST "http://localhost:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "store_nbr": 1,
+    "family": 0,
+    "onpromotion": 0,
+    "year": 2017,
+    "month": 8,
+    "day": 16,
+    "dayofweek": 2,
+    "weekofyear": 33,
+    "is_weekend": 0,
+    "lag_1": 7.0,
+    "lag_7": 5.0,
+    "rolling_mean_7": 6.2,
+    "rolling_std_7": 1.4,
+    "rolling_mean_14": 5.8,
+    "trend_1_7": 2.0,
+    "promo_last_7": 0.0
+  }'
+```
+
+Example response:
+
+```json
+{
+  "prediction": 4.802244603023583
+}
+```
+
+---
+
 # ⚙️ CI/CD
 
 The repository includes a GitHub Actions workflow for Docker build validation.
@@ -260,8 +345,10 @@ The repository includes a GitHub Actions workflow for Docker build validation.
 Current CI pipeline:
 
 * Docker image build validation
-* API container verification
+* API container build verification
 * production-oriented repository structure validation
+
+This ensures that the API container remains buildable after each push to the main branch.
 
 ---
 
@@ -274,9 +361,11 @@ Current CI pipeline:
 ✅ Business-aware evaluation completed
 ✅ Forecast trust scoring completed
 ✅ Monitoring & drift strategy completed
+✅ Reusable training script completed
+✅ Reusable prediction script completed
 ✅ Dockerized FastAPI inference service completed
 ✅ GitHub Actions Docker CI completed
-🔄 Refactoring notebooks into reusable ML pipeline
+🔄 Further production hardening in progress
 
 ---
 
@@ -306,6 +395,20 @@ Then continue sequentially through the forecasting workflow.
 
 ```bash
 python3 -m src.train --data-dir data --model-dir models
+```
+
+This creates the model artifacts inside:
+
+```text
+models/
+```
+
+---
+
+## Run local prediction script
+
+```bash
+python3 -m src.predict
 ```
 
 ---
@@ -353,7 +456,10 @@ The project simulates a production-oriented ML workflow:
 * operational risk analysis
 * trust-aware forecasting
 * monitoring and drift strategy
+* model artifact persistence
 * containerized inference serving
+* API metadata endpoint
+* typed request/response schemas
 * CI-oriented repository structure
 
 The project should be considered a production-oriented forecasting prototype rather than a fully deployed production system.
@@ -364,7 +470,6 @@ The project should be considered a production-oriented forecasting prototype rat
 
 Planned next steps:
 
-* reusable CLI training pipeline
 * model registry integration
 * artifact versioning
 * retraining orchestration
@@ -383,6 +488,7 @@ Planned next steps:
 * extreme demand spikes are still challenging
 * no distributed training
 * no real cloud deployment yet
+* model artifacts are generated locally and mounted into the API container
 
 ---
 
@@ -393,12 +499,13 @@ Planned next steps:
 * Forecasts should be evaluated in terms of business impact and operational risk
 * Forecast outputs should become trust-aware decision signals
 * Forecast systems should be monitored continuously after deployment
+* ML models become more useful when they are served, versioned and monitored as software systems
 
 ---
 
 # 🧾 Final Note
 
-This project demonstrates not only how forecasting models can be trained, but how forecasting systems can be structured, validated, deployed and monitored in realistic ML environments.
+This project demonstrates not only how forecasting models can be trained, but how forecasting systems can be structured, validated, served and monitored in realistic ML environments.
 
 The final output is not simply a sales prediction model.
 

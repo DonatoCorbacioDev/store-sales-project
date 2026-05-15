@@ -2,22 +2,20 @@ from __future__ import annotations
 
 import json
 import logging
-from pathlib import Path
 
 import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-
-MODEL_DIR = Path("models")
+from api.config import API_TITLE, API_VERSION, MODEL_DIR
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Store Sales Forecasting API",
-    version="1.0.0",
+    title=API_TITLE,
+    version=API_VERSION,
 )
 
 

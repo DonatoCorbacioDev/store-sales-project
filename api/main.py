@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import joblib
@@ -11,6 +12,9 @@ from pydantic import BaseModel
 
 MODEL_DIR = Path("models")
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = FastAPI(
     title="Store Sales Forecasting API",
     version="1.0.0",
@@ -19,6 +23,8 @@ app = FastAPI(
 
 # Load model artifacts at startup
 model = joblib.load(MODEL_DIR / "store_sales_lgbm.joblib")
+
+logger.info("Model artifacts loaded successfully.")
 
 with open(MODEL_DIR / "feature_list.json", "r", encoding="utf-8") as f:
     FEATURES = json.load(f)
@@ -59,6 +65,17 @@ class HealthResponse(BaseModel):
     model_loaded: bool
 
 
+class ModelInfoResponse(BaseModel):
+    model_name: str
+    model_type: str
+    target: str
+    n_features: int
+    n_training_rows: int
+    train_start: str
+    train_end: str
+    features: list[str]
+
+
 @app.get("/health", response_model=HealthResponse)
 def health():
     return {
@@ -74,7 +91,7 @@ def root():
     }
 
 
-@app.get("/model-info")
+@app.get("/model-info", response_model=ModelInfoResponse)
 def model_info():
     return {
         "model_name": MODEL_METADATA.get("model_name"),
@@ -96,6 +113,13 @@ def predict(request: ForecastRequest):
 
     prediction = model.predict(X)[0]
     prediction = max(float(prediction), 0.0)
+
+    logger.info(
+        "Prediction generated | store_nbr=%s | family=%s | prediction=%.4f",
+        request.store_nbr,
+        request.family,
+        prediction,
+    )
 
     return {
         "prediction": prediction
